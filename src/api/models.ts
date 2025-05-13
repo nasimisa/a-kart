@@ -4,5 +4,5 @@ export type Customer = {
   Surname: string;
   BirthDate: string;
   GSMNumber: string;
-  CardNumber: string;
+  CardNumber?: string;
 };
