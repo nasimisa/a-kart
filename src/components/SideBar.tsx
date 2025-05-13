@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { memo, useState } from 'react';
 import { VStack, Box, Button, Image, Skeleton } from '@chakra-ui/react';
 import { Link, useLocation } from 'react-router-dom';
 
@@ -21,7 +21,7 @@ const Sidebar = () => {
   };
 
   return (
-    <Box w='200px' py={4} bg='#C4CAF6' h='100vh'>
+    <Box w='200px' py={4} bg='#C4CAF6' h='100vh' position='fixed'>
       <VStack align='stretch' gap={4}>
         <Box px={4} pb={4}>
           <Link to='/customers'>
@@ -62,4 +62,4 @@ const Sidebar = () => {
   );
 };
 
-export default Sidebar;
+export default memo(Sidebar);

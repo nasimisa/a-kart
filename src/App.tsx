@@ -1,12 +1,12 @@
 import { Box, Flex } from '@chakra-ui/react';
-import AppRouter from './router/AppRouter';
-import Sidebar from './components/SideBar';
+import AppRouter from './router';
+import { SideBar } from './components';
 
 const App = () => {
   return (
     <Flex>
-      <Sidebar />
-      <Box flex='1' p={4}>
+      <SideBar />
+      <Box flex='1' p={4} ml='200px'>
         <AppRouter />
       </Box>
     </Flex>
