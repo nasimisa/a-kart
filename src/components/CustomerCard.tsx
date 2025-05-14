@@ -85,13 +85,15 @@ export const CustomerCard = ({ customer }: CustomerCardProps) => {
               size='sm'
               aria-label='Toggle PAN'
               onClick={() => setShowPan(!showPan)}
+              color='#fff'
+              bg='#9086FF'
             >
               {showPan ? <FiEyeOff /> : <FiEye />}
             </IconButton>
             <IconButton
               ml='2'
               size='sm'
-              colorScheme='red'
+              colorPalette='red'
               aria-label='Remove card'
               onClick={onOpen}
             >
@@ -126,10 +128,12 @@ export const CustomerCard = ({ customer }: CustomerCardProps) => {
               </Dialog.Body>
               <Dialog.Footer>
                 <Dialog.ActionTrigger asChild>
-                  <Button variant='outline'>Cancel</Button>
+                  <Button variant='subtle' colorPalette='red'>
+                    Cancel
+                  </Button>
                 </Dialog.ActionTrigger>
                 <Button
-                  colorScheme='red'
+                  colorPalette='green'
                   onClick={handleRemoveCard}
                   disabled={!cancelReason?.trim()}
                   loading={isPending}

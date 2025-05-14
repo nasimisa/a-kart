@@ -62,6 +62,7 @@ const Sidebar = () => {
               color={isActive ? '#fff' : '#1D0C69'}
               bg={isActive ? '#9086FF' : 'transparent'}
               _hover={{ bg: '#9086FF', color: '#fff' }}
+              fontSize={16}
             >
               {label}
             </Button>

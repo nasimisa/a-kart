@@ -8,8 +8,8 @@ export const CustomersList = ({ onOpen }: { onOpen: () => void }) => {
   const { data: customers, isLoading } = useGetCustomers();
   const [search, setSearch] = useState('');
 
-  const filtered = customers?.filter(cust => {
-    const full = `${cust.Name} ${cust.Surname} ${cust.GSMNumber} ${cust.CardNumber}`.toLowerCase();
+  const filtered = customers?.filter(item => {
+    const full = `${item.Name} ${item.Surname} ${item.GSMNumber} ${item.CardNumber}`.toLowerCase();
     return full.includes(search.toLowerCase());
   });
 
@@ -32,7 +32,7 @@ export const CustomersList = ({ onOpen }: { onOpen: () => void }) => {
           onChange={e => setSearch(e.target.value)}
           mr='4'
         />
-        <Button colorScheme='blue' onClick={onOpen} maxW={200}>
+        <Button color='#fff' bg='#F57430' onClick={onOpen} maxW={200}>
           <FiPlus />
           Add Customer
         </Button>
@@ -41,7 +41,7 @@ export const CustomersList = ({ onOpen }: { onOpen: () => void }) => {
       {isLoading ? (
         <Text>Loading...</Text>
       ) : (
-        <SimpleGrid columns={{ base: 1, md: 2, lg: 3 }} gap={4}>
+        <SimpleGrid columns={{ base: 1, md: 2, lg: 4 }} gap={4}>
           {filtered?.reverse()?.map(customer => (
             <CustomerCard key={customer.CustomerID} customer={customer} />
           ))}

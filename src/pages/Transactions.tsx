@@ -1,5 +1,7 @@
+import { TransactionsTable } from '../components';
+
 const Transactions = () => {
-  return <div>Transaction table will go here</div>;
+  return <TransactionsTable />;
 };
 
 export default Transactions;

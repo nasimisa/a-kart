@@ -77,10 +77,12 @@ export const AddCustomerModal = ({ open, onClose }: AddCustomerModalProps) => {
                 </Dialog.Body>
                 <Dialog.Footer>
                   <Dialog.ActionTrigger asChild>
-                    <Button variant='outline'>Cancel</Button>
+                    <Button variant='subtle' colorPalette='red'>
+                      Cancel
+                    </Button>
                   </Dialog.ActionTrigger>
 
-                  <Button type='submit' colorScheme='blue' loading={isPending}>
+                  <Button type='submit' colorPalette='green' loading={isPending}>
                     Save
                   </Button>
                 </Dialog.Footer>
