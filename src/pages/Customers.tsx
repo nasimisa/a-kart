@@ -26,7 +26,7 @@ const Customers = () => {
 
   return (
     <Box p='6'>
-      <Heading size='md' mb={4}>
+      <Heading size='3xl' mb={4}>
         Customers
       </Heading>
       <Spacer />

@@ -12,9 +12,10 @@ import {
 } from '@chakra-ui/react';
 import { FiEye, FiEyeOff, FiTrash2, FiPlus } from 'react-icons/fi';
 import { useState } from 'react';
-// import { updateCustomer } from '@/api/customers';
 // import { logAudit } from '@/api/audit';
 import { Customer } from '../api/models';
+import { useEditCustomer } from '../api';
+import { toaster } from './Toaster';
 
 interface CustomerCardProps {
   customer: Customer;
@@ -24,19 +25,36 @@ export const CustomerCard = ({ customer }: CustomerCardProps) => {
   const { open, onOpen, onClose } = useDisclosure();
   const [showPan, setShowPan] = useState(false);
   const [cancelReason, setCancelReason] = useState('');
+  const { mutateAsync, isPending } = useEditCustomer({
+    onSuccess: () => {
+      onClose();
+    },
+    onError: () => {
+      toaster.error({ title: 'Something went wrong' });
+    },
+  });
 
-  const handleRemoveCard = () => {
-    // updateMutation.mutate({ ...customer, CardNumber: undefined });
+  const handleRemoveCard = async () => {
+    try {
+      await mutateAsync({ ...customer, CardNumber: undefined });
+      toaster.success({ title: 'Card removed successfully' });
+    } catch (error) {
+      console.error('Caught mutation error:', error);
+    }
     // logAudit({
     //   action: `Card removed from Customer ${customer.CustomerID}. Reason: ${cancelReason}`,
     //   timestamp: new Date().toISOString(),
     // });
-    onClose();
   };
 
-  const handleAddCard = () => {
+  const handleAddCard = async () => {
     const newCard = Array.from({ length: 16 }, () => Math.floor(Math.random() * 10)).join('');
-    // mutateAsync({ ...customer, CardNumber: newCard });
+    try {
+      await mutateAsync({ ...customer, CardNumber: newCard });
+      toaster.success({ title: 'Card added successfully' });
+    } catch (error) {
+      console.error('Caught mutation error:', error);
+    }
     // logAudit({
     //   action: `Card added to Customer ${customer.CustomerID}`,
     //   timestamp: new Date().toISOString(),
@@ -114,6 +132,7 @@ export const CustomerCard = ({ customer }: CustomerCardProps) => {
                   colorScheme='red'
                   onClick={handleRemoveCard}
                   disabled={!cancelReason?.trim()}
+                  loading={isPending}
                 >
                   Confirm
                 </Button>
