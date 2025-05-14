@@ -9,7 +9,8 @@ export const CustomersList = ({ onOpen }: { onOpen: () => void }) => {
   const [search, setSearch] = useState('');
 
   const filtered = customers?.filter(item => {
-    const full = `${item.Name} ${item.Surname} ${item.GSMNumber} ${item.CardNumber}`.toLowerCase();
+    const full =
+      `${item.Name} ${item.Surname} ${item.GSMNumber} ${item.CardNumber} ${item.CustomerID}`.toLowerCase();
     return full.includes(search.toLowerCase());
   });
 

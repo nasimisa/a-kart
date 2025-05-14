@@ -7,8 +7,7 @@ export const TransactionsTable = () => {
   const [search, setSearch] = useState('');
 
   const filtered = transactions?.filter(item => {
-    const full =
-      `${item.CustomerID} ${item.TransactionAmount} ${item.TransactionDate} ${item.TransactionID}`.toLowerCase();
+    const full = `${item.CustomerID} ${item.TransactionID}`.toLowerCase();
 
     return full.includes(search.toLowerCase());
   });
@@ -21,7 +20,7 @@ export const TransactionsTable = () => {
       <Box mb={4}>
         <Input
           maxW='350px'
-          placeholder='Search by customer/transaction ID, amount or date'
+          placeholder='Search by customer/transaction ID'
           value={search}
           onChange={e => setSearch(e.target.value)}
           mr='4'

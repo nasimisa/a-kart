@@ -9,13 +9,16 @@ import {
   Portal,
   CloseButton,
   Textarea,
+  NativeSelect,
+  Field,
+  HStack,
 } from '@chakra-ui/react';
 import { FiEye, FiEyeOff, FiTrash2, FiPlus } from 'react-icons/fi';
 import { useState } from 'react';
-// import { logAudit } from '@/api/audit';
-import { Customer } from '../api/models';
-import { useEditCustomer } from '../api';
+import { ActionType, Customer, UserType } from '../api/models';
+import { useCreateAuditLog, useEditCustomer } from '../api';
 import { toaster } from './Toaster';
+import Copy from './Copy';
 
 interface CustomerCardProps {
   customer: Customer;
@@ -25,6 +28,7 @@ export const CustomerCard = ({ customer }: CustomerCardProps) => {
   const { open, onOpen, onClose } = useDisclosure();
   const [showPan, setShowPan] = useState(false);
   const [cancelReason, setCancelReason] = useState('');
+  const [deletedBy, setDeletedBy] = useState(UserType.FRONT_OFFICE_AGENT);
   const { mutateAsync, isPending } = useEditCustomer({
     onSuccess: () => {
       onClose();
@@ -34,17 +38,23 @@ export const CustomerCard = ({ customer }: CustomerCardProps) => {
     },
   });
 
+  const { mutateAsync: logAudit } = useCreateAuditLog({});
+
   const handleRemoveCard = async () => {
     try {
       await mutateAsync({ ...customer, CardNumber: undefined });
       toaster.success({ title: 'Card removed successfully' });
+
+      await logAudit({
+        action: `Card removed from Customer ID: ${customer.CustomerID}`,
+        reason: cancelReason,
+        timestamp: new Date().toISOString(),
+        actionType: ActionType.DELETE_CARD,
+        user: deletedBy,
+      });
     } catch (error) {
       console.error('Caught mutation error:', error);
     }
-    // logAudit({
-    //   action: `Card removed from Customer ${customer.CustomerID}. Reason: ${cancelReason}`,
-    //   timestamp: new Date().toISOString(),
-    // });
   };
 
   const handleAddCard = async () => {
@@ -52,13 +62,16 @@ export const CustomerCard = ({ customer }: CustomerCardProps) => {
     try {
       await mutateAsync({ ...customer, CardNumber: newCard });
       toaster.success({ title: 'Card added successfully' });
+
+      await logAudit({
+        action: `Card added for Customer ID: ${customer.CustomerID}`,
+        timestamp: new Date().toISOString(),
+        actionType: ActionType.ADD_CARD,
+        user: UserType.ADMIN,
+      });
     } catch (error) {
       console.error('Caught mutation error:', error);
     }
-    // logAudit({
-    //   action: `Card added to Customer ${customer.CustomerID}`,
-    //   timestamp: new Date().toISOString(),
-    // });
   };
 
   const card = customer.CardNumber ? customer.CardNumber.replace(/(.{4})/g, '$1 ').trim() : '';
@@ -67,7 +80,32 @@ export const CustomerCard = ({ customer }: CustomerCardProps) => {
     : '';
 
   return (
-    <Box borderWidth='1px' p='4' borderRadius='lg' boxShadow='md' bg='white' maxW={400}>
+    <Box
+      position='relative'
+      borderWidth='1px'
+      p='4'
+      borderRadius='lg'
+      boxShadow='md'
+      bg='white'
+      maxW={400}
+    >
+      <HStack
+        position='absolute'
+        top='2'
+        right='2'
+        bg='purple.100'
+        color='purple.800'
+        fontSize='xs'
+        fontWeight='bold'
+        px='2'
+        py='1'
+        borderRadius='md'
+        boxShadow='sm'
+      >
+        ID: {customer.CustomerID}
+        <Copy ml={2} text={customer.CustomerID} />
+      </HStack>
+
       <Text fontWeight='bold'>
         {customer.Name} {customer.Surname}
       </Text>
@@ -75,41 +113,38 @@ export const CustomerCard = ({ customer }: CustomerCardProps) => {
       <Text mb={8}>Mobile number: {customer.GSMNumber}</Text>
 
       {customer.CardNumber ? (
-        <>
-          <Flex mt='2' align='center'>
-            <Text fontFamily='monospace' fontSize='lg'>
-              {showPan ? card : maskedCard}
-            </Text>
-            <IconButton
-              ml='2'
-              size='sm'
-              aria-label='Toggle PAN'
-              onClick={() => setShowPan(!showPan)}
-              color='#fff'
-              bg='#9086FF'
-            >
-              {showPan ? <FiEyeOff /> : <FiEye />}
-            </IconButton>
-            <IconButton
-              ml='2'
-              size='sm'
-              colorPalette='red'
-              aria-label='Remove card'
-              onClick={onOpen}
-            >
-              <FiTrash2 />
-            </IconButton>
-          </Flex>
-        </>
+        <Flex align='center'>
+          <Text fontFamily='monospace' fontSize='md'>
+            {showPan ? card : maskedCard}
+          </Text>
+          <IconButton
+            ml='2'
+            size='xs'
+            aria-label='Toggle PAN'
+            onClick={() => setShowPan(!showPan)}
+            color='#fff'
+            bg='#9086FF'
+          >
+            {showPan ? <FiEyeOff /> : <FiEye />}
+          </IconButton>
+          <IconButton ml='2' size='xs' colorPalette='red' aria-label='Remove card' onClick={onOpen}>
+            <FiTrash2 />
+          </IconButton>
+        </Flex>
       ) : (
-        <Button mt='4' onClick={handleAddCard}>
-          <FiPlus />
+        <Button onClick={handleAddCard} colorPalette='green' maxH='32px'>
+          <FiPlus size={12} />
           Add Card
         </Button>
       )}
 
       {/* Cancellation Reason Modal */}
-      <Dialog.Root open={open} onOpenChange={onClose} motionPreset='slide-in-bottom'>
+      <Dialog.Root
+        open={open}
+        onOpenChange={onClose}
+        motionPreset='slide-in-bottom'
+        initialFocusEl={() => null}
+      >
         <Portal>
           <Dialog.Backdrop />
           <Dialog.Positioner>
@@ -118,13 +153,31 @@ export const CustomerCard = ({ customer }: CustomerCardProps) => {
                 <Dialog.Title>Remove Card</Dialog.Title>
               </Dialog.Header>
               <Dialog.Body>
-                <Textarea
-                  placeholder='Removal reason'
-                  value={cancelReason}
-                  onChange={e => setCancelReason(e.target.value)}
-                  rows={4}
-                  resize='none'
-                />
+                <Field.Root>
+                  <Field.Label>Deleted by</Field.Label>
+                  <NativeSelect.Root>
+                    <NativeSelect.Field
+                      value={deletedBy}
+                      onChange={e => setDeletedBy(e.target.value as UserType)}
+                    >
+                      <option value={UserType.FRONT_OFFICE_AGENT}>Front office Agent</option>
+                      <option value={UserType.CALL_CENTER_AGENT}>Call center Agent</option>
+                      <option value={UserType.ADMIN}>Admin</option>
+                    </NativeSelect.Field>
+                    <NativeSelect.Indicator />
+                  </NativeSelect.Root>
+                </Field.Root>
+
+                <Field.Root css={{ mt: 4 }} required>
+                  <Field.Label>Removal reason</Field.Label>
+                  <Textarea
+                    placeholder='Enter removal reason'
+                    value={cancelReason}
+                    onChange={e => setCancelReason(e.target.value)}
+                    rows={4}
+                    resize='none'
+                  />
+                </Field.Root>
               </Dialog.Body>
               <Dialog.Footer>
                 <Dialog.ActionTrigger asChild>

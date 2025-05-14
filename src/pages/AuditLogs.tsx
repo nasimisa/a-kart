@@ -1,5 +1,7 @@
+import { AuditLogsList } from '../components';
+
 const AuditLogs = () => {
-  return <div>Audit log list will go here</div>;
+  return <AuditLogsList />;
 };
 
 export default AuditLogs;
