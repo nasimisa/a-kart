@@ -86,63 +86,71 @@ export const CustomerCard = ({ customer }: CustomerCardProps) => {
   };
 
   return (
-    <Box
-      position='relative'
-      borderWidth='1px'
-      p='4'
-      borderRadius='lg'
-      boxShadow='md'
-      bg='white'
-      maxW={400}
-    >
-      <HStack
-        position='absolute'
-        top='2'
-        right='2'
-        bg='purple.100'
-        color='purple.800'
-        fontSize='xs'
-        fontWeight='bold'
-        px='2'
-        py='1'
-        borderRadius='md'
-        boxShadow='sm'
+    <>
+      <Box
+        position='relative'
+        borderWidth='1px'
+        p='4'
+        borderRadius='lg'
+        boxShadow='md'
+        bg='white'
+        maxW={400}
       >
-        ID: {customer.CustomerID}
-        <Copy ml={2} text={customer.CustomerID} />
-      </HStack>
+        <HStack
+          position='absolute'
+          top='2'
+          right='2'
+          bg='purple.100'
+          color='purple.800'
+          fontSize='xs'
+          fontWeight='bold'
+          px='2'
+          py='1'
+          borderRadius='md'
+          boxShadow='sm'
+        >
+          ID: {customer.CustomerID}
+          <Copy ml={2} text={customer.CustomerID} />
+        </HStack>
 
-      <Text fontWeight='bold'>
-        {customer.Name} {customer.Surname}
-      </Text>
-      <Text>Birth date: {customer.BirthDate}</Text>
-      <Text mb={8}>Mobile number: {customer.GSMNumber}</Text>
+        <Text fontWeight='bold'>
+          {customer.Name} {customer.Surname}
+        </Text>
+        <Text>Birth date: {customer.BirthDate}</Text>
+        <Text mb={8}>Mobile number: {customer.GSMNumber}</Text>
 
-      {customer.CardNumber ? (
-        <Flex align='center'>
-          <Text fontFamily='monospace' fontSize='md'>
-            {showPan ? card : maskedCard}
-          </Text>
-          <IconButton
-            ml='2'
-            size='xs'
-            aria-label='Toggle PAN'
-            onClick={() => setShowPan(!showPan)}
-            color='#fff'
-            bg='#9086FF'
-          >
-            {showPan ? <FiEyeOff /> : <FiEye />}
-          </IconButton>
-          <IconButton ml='2' size='xs' colorPalette='red' aria-label='Remove card' onClick={onOpen}>
-            <FiTrash2 />
-          </IconButton>
-        </Flex>
-      ) : (
-        <Button onClick={handleAddCard} colorPalette='green' maxH='32px'>
-          <FiPlus size={12} />
-          Add Card
-        </Button>
-      )}
+        {customer.CardNumber ? (
+          <Flex align='center'>
+            <Text fontFamily='monospace' fontSize='md'>
+              {showPan ? card : maskedCard}
+            </Text>
+            <IconButton
+              ml='2'
+              size='xs'
+              aria-label='Toggle PAN'
+              onClick={() => setShowPan(!showPan)}
+              color='#fff'
+              bg='#9086FF'
+            >
+              {showPan ? <FiEyeOff /> : <FiEye />}
+            </IconButton>
+            <IconButton
+              ml='2'
+              size='xs'
+              colorPalette='red'
+              aria-label='Remove card'
+              onClick={onOpen}
+            >
+              <FiTrash2 />
+            </IconButton>
+          </Flex>
+        ) : (
+          <Button onClick={handleAddCard} colorPalette='green' maxH='32px'>
+            <FiPlus size={12} />
+            Add Card
+          </Button>
+        )}
+      </Box>
 
       {/* Cancellation Reason Modal */}
       <Dialog.Root
@@ -214,6 +222,6 @@ export const CustomerCard = ({ customer }: CustomerCardProps) => {
           </Dialog.Positioner>
         </Portal>
       </Dialog.Root>
-    </Box>
+    </>
   );
 };

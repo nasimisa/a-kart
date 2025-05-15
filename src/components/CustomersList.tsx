@@ -1,4 +1,16 @@
-import { Button, Heading, Input, SimpleGrid, Spacer, Stack, Text } from '@chakra-ui/react';
+import {
+  Box,
+  Button,
+  Flex,
+  Heading,
+  HStack,
+  IconButton,
+  Input,
+  SimpleGrid,
+  Skeleton,
+  SkeletonText,
+  Stack,
+} from '@chakra-ui/react';
 import { useGetCustomers } from '../api';
 import { CustomerCard } from '../components';
 import { FiPlus } from 'react-icons/fi';
@@ -19,35 +31,86 @@ export const CustomersList = ({ onOpen }: { onOpen: () => void }) => {
       <Heading size='3xl' mb={4}>
         Customers
       </Heading>
-      <Spacer />
       <Stack
         direction={{ base: 'column', md: 'row' }}
         gap={4}
         mb={4}
         justifyContent='space-between'
       >
-        <Input
-          maxW='300px'
-          placeholder='Search by name, mobile or card number'
-          value={search}
-          onChange={e => setSearch(e.target.value)}
-          mr='4'
-        />
-        <Button color='#fff' bg='#F57430' onClick={onOpen} maxW={200}>
+        {isLoading ? (
+          <Skeleton w='300px' height='40px' />
+        ) : (
+          <Input
+            w='300px'
+            placeholder='Search by name, mobile or card number'
+            value={search}
+            onChange={e => setSearch(e.target.value)}
+            mr='4'
+          />
+        )}
+        <Button color='#fff' bg='#F57430' onClick={onOpen} w={200} loading={isLoading}>
           <FiPlus />
           Add Customer
         </Button>
       </Stack>
 
-      {isLoading ? (
-        <Text>Loading...</Text>
-      ) : (
-        <SimpleGrid columns={{ base: 1, md: 2, lg: 4 }} gap={4}>
-          {filtered?.reverse()?.map(customer => (
-            <CustomerCard key={customer.CustomerID} customer={customer} />
-          ))}
-        </SimpleGrid>
-      )}
+      <SimpleGrid columns={{ base: 1, md: 2, lg: 4 }} gap={4}>
+        {isLoading
+          ? Array.from({ length: 12 }).map((_, index) => (
+              <Box
+                position='relative'
+                borderWidth='1px'
+                p='4'
+                borderRadius='lg'
+                boxShadow='md'
+                bg='white'
+                maxW={400}
+                key={index}
+              >
+                <HStack
+                  position='absolute'
+                  top='2'
+                  right='2'
+                  bg='purple.100'
+                  color='purple.800'
+                  fontSize='xs'
+                  fontWeight='bold'
+                  px='2'
+                  py='1'
+                  borderRadius='md'
+                  boxShadow='sm'
+                >
+                  <Skeleton w='70px' h='20px' bg='purple.100' />
+                </HStack>
+
+                <SkeletonText maxW={120} mb={1} />
+
+                <Flex align='center' mt={8}>
+                  <Skeleton w={167.14} h='24px' />
+
+                  <IconButton
+                    ml='2'
+                    size='xs'
+                    aria-label='Toggle PAN'
+                    color='#fff'
+                    bg='#9086FF'
+                    loading
+                  />
+
+                  <IconButton
+                    ml='2'
+                    size='xs'
+                    colorPalette='red'
+                    aria-label='Remove card'
+                    loading
+                  />
+                </Flex>
+              </Box>
+            ))
+          : filtered
+              ?.reverse()
+              ?.map(customer => <CustomerCard key={customer.CustomerID} customer={customer} />)}
+      </SimpleGrid>
     </>
   );
 };
