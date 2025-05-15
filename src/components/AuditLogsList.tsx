@@ -79,7 +79,7 @@ export const AuditLogsList = () => {
         }}
       >
         {isLoading
-          ? Array.from({ length: 8 }).map((_, index) => (
+          ? Array.from({ length: 16 }).map((_, index) => (
               <HStack align='flex-start' key={`skeleton-${index}`}>
                 <Skeleton width='20px' height='20px' borderRadius='sm' />
                 <Box

@@ -29,9 +29,16 @@ export const CustomerCard = ({ customer }: CustomerCardProps) => {
   const [showPan, setShowPan] = useState(false);
   const [cancelReason, setCancelReason] = useState('');
   const [deletedBy, setDeletedBy] = useState(UserType.FRONT_OFFICE_AGENT);
+
+  const handleClose = () => {
+    onClose();
+    setCancelReason('');
+    setDeletedBy(UserType.FRONT_OFFICE_AGENT);
+  };
+
   const { mutateAsync, isPending } = useEditCustomer({
     onSuccess: () => {
-      onClose();
+      handleClose();
     },
     onError: () => {
       toaster.error({ title: 'Something went wrong' });
@@ -78,12 +85,6 @@ export const CustomerCard = ({ customer }: CustomerCardProps) => {
   const maskedCard = customer.CardNumber
     ? `${customer.CardNumber.slice(0, 4)} **** **** ${customer.CardNumber.slice(-4)}`
     : '';
-
-  const handleClose = () => {
-    onClose();
-    setCancelReason('');
-    setDeletedBy(UserType.FRONT_OFFICE_AGENT);
-  };
 
   return (
     <>
@@ -145,7 +146,13 @@ export const CustomerCard = ({ customer }: CustomerCardProps) => {
             </IconButton>
           </Flex>
         ) : (
-          <Button onClick={handleAddCard} colorPalette='green' maxH='32px'>
+          <Button
+            onClick={handleAddCard}
+            colorPalette='green'
+            maxH='32px'
+            w='121.62px'
+            loading={isPending}
+          >
             <FiPlus size={12} />
             Add Card
           </Button>

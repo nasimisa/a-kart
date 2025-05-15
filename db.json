@@ -898,7 +898,16 @@
       "Surname": "Fraser",
       "BirthDate": "2/5/2011",
       "GSMNumber": "+994108908030",
-      "CardNumber": "9194507374263230"
+      "CardNumber": "2849366141637332"
+    },
+    {
+      "id": "c802",
+      "Name": "s",
+      "Surname": "s",
+      "BirthDate": "2022-12-22",
+      "GSMNumber": "+994504646613",
+      "CustomerID": "1747302713424",
+      "CardNumber": "7729969713410042"
     }
   ],
   "transactions": [
@@ -3903,5 +3912,320 @@
       "TransactionAmount": "811.53"
     }
   ],
-  "auditLogs": []
+  "auditLogs": [
+    {
+      "id": "3895",
+      "action": "New Customer added",
+      "timestamp": "2025-05-15T09:51:54.305Z",
+      "actionType": "CREATE_CUSTOMER",
+      "user": "CALL_CENTER_AGENT"
+    },
+    {
+      "id": "cd16",
+      "action": "Card added for Customer ID: 1747302713424",
+      "timestamp": "2025-05-15T10:10:08.130Z",
+      "actionType": "ADD_CARD",
+      "user": "ADMIN"
+    },
+    {
+      "id": "cafc",
+      "action": "Card removed from Customer ID: 1747302713424",
+      "reason": "ff",
+      "timestamp": "2025-05-15T10:10:14.541Z",
+      "actionType": "DELETE_CARD",
+      "user": "FRONT_OFFICE_AGENT"
+    },
+    {
+      "id": "b08d",
+      "action": "Card added for Customer ID: 1747302713424",
+      "timestamp": "2025-05-15T10:10:16.800Z",
+      "actionType": "ADD_CARD",
+      "user": "ADMIN"
+    },
+    {
+      "id": "b0bd",
+      "action": "Card removed from Customer ID: 1747302713424",
+      "reason": "ffs",
+      "timestamp": "2025-05-15T10:11:11.835Z",
+      "actionType": "DELETE_CARD",
+      "user": "FRONT_OFFICE_AGENT"
+    },
+    {
+      "id": "0994",
+      "action": "Card added for Customer ID: 1747302713424",
+      "timestamp": "2025-05-15T10:11:17.346Z",
+      "actionType": "ADD_CARD",
+      "user": "ADMIN"
+    },
+    {
+      "id": "bb0c",
+      "action": "Card removed from Customer ID: 1747302713424",
+      "reason": "sss",
+      "timestamp": "2025-05-15T10:12:20.794Z",
+      "actionType": "DELETE_CARD",
+      "user": "FRONT_OFFICE_AGENT"
+    },
+    {
+      "id": "a1a7",
+      "action": "Card added for Customer ID: 1747302713424",
+      "timestamp": "2025-05-15T10:12:23.582Z",
+      "actionType": "ADD_CARD",
+      "user": "ADMIN"
+    },
+    {
+      "id": "619c",
+      "action": "Card removed from Customer ID: 1747302713424",
+      "reason": "ssssss",
+      "timestamp": "2025-05-15T10:12:47.391Z",
+      "actionType": "DELETE_CARD",
+      "user": "CALL_CENTER_AGENT"
+    },
+    {
+      "id": "baee",
+      "action": "Card added for Customer ID: 1747302713424",
+      "timestamp": "2025-05-15T10:12:52.904Z",
+      "actionType": "ADD_CARD",
+      "user": "ADMIN"
+    },
+    {
+      "id": "4be0",
+      "action": "Card removed from Customer ID: 1747302713424",
+      "reason": "dd",
+      "timestamp": "2025-05-15T10:14:23.167Z",
+      "actionType": "DELETE_CARD",
+      "user": "CALL_CENTER_AGENT"
+    },
+    {
+      "id": "2b8e",
+      "action": "Card added for Customer ID: 1747302713424",
+      "timestamp": "2025-05-15T10:14:25.480Z",
+      "actionType": "ADD_CARD",
+      "user": "ADMIN"
+    },
+    {
+      "id": "f8da",
+      "action": "Card removed from Customer ID: 1747302713424",
+      "reason": "dddd",
+      "timestamp": "2025-05-15T10:14:33.490Z",
+      "actionType": "DELETE_CARD",
+      "user": "FRONT_OFFICE_AGENT"
+    },
+    {
+      "id": "e3d7",
+      "action": "Card added for Customer ID: 1747302713424",
+      "timestamp": "2025-05-15T10:14:39.249Z",
+      "actionType": "ADD_CARD",
+      "user": "ADMIN"
+    },
+    {
+      "id": "b779",
+      "action": "Card removed from Customer ID: 1747302713424",
+      "reason": "s",
+      "timestamp": "2025-05-15T10:15:00.595Z",
+      "actionType": "DELETE_CARD",
+      "user": "FRONT_OFFICE_AGENT"
+    },
+    {
+      "id": "a671",
+      "action": "Card added for Customer ID: 1747302713424",
+      "timestamp": "2025-05-15T10:15:47.410Z",
+      "actionType": "ADD_CARD",
+      "user": "ADMIN"
+    },
+    {
+      "id": "02f8",
+      "action": "Card removed from Customer ID: 1747302713424",
+      "reason": "d",
+      "timestamp": "2025-05-15T10:15:59.471Z",
+      "actionType": "DELETE_CARD",
+      "user": "FRONT_OFFICE_AGENT"
+    },
+    {
+      "id": "679b",
+      "action": "Card added for Customer ID: 1747302713424",
+      "timestamp": "2025-05-15T10:16:02.165Z",
+      "actionType": "ADD_CARD",
+      "user": "ADMIN"
+    },
+    {
+      "id": "e3c4",
+      "action": "Card removed from Customer ID: 1747302713424",
+      "reason": "dd",
+      "timestamp": "2025-05-15T10:16:43.097Z",
+      "actionType": "DELETE_CARD",
+      "user": "FRONT_OFFICE_AGENT"
+    },
+    {
+      "id": "79bf",
+      "action": "Card added for Customer ID: 1747302713424",
+      "timestamp": "2025-05-15T10:16:45.659Z",
+      "actionType": "ADD_CARD",
+      "user": "ADMIN"
+    },
+    {
+      "id": "b477",
+      "action": "Card removed from Customer ID: 1747302713424",
+      "reason": "s",
+      "timestamp": "2025-05-15T10:17:12.076Z",
+      "actionType": "DELETE_CARD",
+      "user": "FRONT_OFFICE_AGENT"
+    },
+    {
+      "id": "e8f1",
+      "action": "Card added for Customer ID: 1747302713424",
+      "timestamp": "2025-05-15T10:17:14.221Z",
+      "actionType": "ADD_CARD",
+      "user": "ADMIN"
+    },
+    {
+      "id": "f9a3",
+      "action": "Card removed from Customer ID: 1747302713424",
+      "reason": "s",
+      "timestamp": "2025-05-15T10:17:40.600Z",
+      "actionType": "DELETE_CARD",
+      "user": "FRONT_OFFICE_AGENT"
+    },
+    {
+      "id": "8baa",
+      "action": "Card added for Customer ID: 1747302713424",
+      "timestamp": "2025-05-15T10:17:42.632Z",
+      "actionType": "ADD_CARD",
+      "user": "ADMIN"
+    },
+    {
+      "id": "645a",
+      "action": "Card removed from Customer ID: 1747302713424",
+      "reason": "x",
+      "timestamp": "2025-05-15T10:18:18.475Z",
+      "actionType": "DELETE_CARD",
+      "user": "FRONT_OFFICE_AGENT"
+    },
+    {
+      "id": "b5cf",
+      "action": "Card added for Customer ID: 1747302713424",
+      "timestamp": "2025-05-15T10:18:20.776Z",
+      "actionType": "ADD_CARD",
+      "user": "ADMIN"
+    },
+    {
+      "id": "3f97",
+      "action": "Card removed from Customer ID: 1747302713424",
+      "reason": "x",
+      "timestamp": "2025-05-15T10:18:26.049Z",
+      "actionType": "DELETE_CARD",
+      "user": "FRONT_OFFICE_AGENT"
+    },
+    {
+      "id": "5a99",
+      "action": "Card added for Customer ID: 1747302713424",
+      "timestamp": "2025-05-15T10:18:29.000Z",
+      "actionType": "ADD_CARD",
+      "user": "ADMIN"
+    },
+    {
+      "id": "04e9",
+      "action": "Card removed from Customer ID: 1747302713424",
+      "reason": "ss",
+      "timestamp": "2025-05-15T10:19:40.001Z",
+      "actionType": "DELETE_CARD",
+      "user": "FRONT_OFFICE_AGENT"
+    },
+    {
+      "id": "c007",
+      "action": "Card added for Customer ID: 1747302713424",
+      "timestamp": "2025-05-15T10:19:45.765Z",
+      "actionType": "ADD_CARD",
+      "user": "ADMIN"
+    },
+    {
+      "id": "747c",
+      "action": "Card removed from Customer ID: 1747302713424",
+      "reason": "s",
+      "timestamp": "2025-05-15T10:19:54.329Z",
+      "actionType": "DELETE_CARD",
+      "user": "FRONT_OFFICE_AGENT"
+    },
+    {
+      "id": "82b9",
+      "action": "Card added for Customer ID: 1747302713424",
+      "timestamp": "2025-05-15T10:19:56.727Z",
+      "actionType": "ADD_CARD",
+      "user": "ADMIN"
+    },
+    {
+      "id": "0637",
+      "action": "Card removed from Customer ID: 1747302713424",
+      "reason": "ss",
+      "timestamp": "2025-05-15T10:20:30.123Z",
+      "actionType": "DELETE_CARD",
+      "user": "FRONT_OFFICE_AGENT"
+    },
+    {
+      "id": "72ac",
+      "action": "Card added for Customer ID: 1747302713424",
+      "timestamp": "2025-05-15T10:21:48.211Z",
+      "actionType": "ADD_CARD",
+      "user": "ADMIN"
+    },
+    {
+      "id": "268c",
+      "action": "Card removed from Customer ID: 1747302713424",
+      "reason": "dd",
+      "timestamp": "2025-05-15T10:21:54.433Z",
+      "actionType": "DELETE_CARD",
+      "user": "FRONT_OFFICE_AGENT"
+    },
+    {
+      "id": "3b71",
+      "action": "Card added for Customer ID: 1747302713424",
+      "timestamp": "2025-05-15T10:21:56.189Z",
+      "actionType": "ADD_CARD",
+      "user": "ADMIN"
+    },
+    {
+      "id": "e41b",
+      "action": "Card removed from Customer ID: 1747302713424",
+      "reason": "dd",
+      "timestamp": "2025-05-15T10:22:00.723Z",
+      "actionType": "DELETE_CARD",
+      "user": "FRONT_OFFICE_AGENT"
+    },
+    {
+      "id": "c1a1",
+      "action": "Card added for Customer ID: 1747302713424",
+      "timestamp": "2025-05-15T10:22:02.436Z",
+      "actionType": "ADD_CARD",
+      "user": "ADMIN"
+    },
+    {
+      "id": "5f37",
+      "action": "Card removed from Customer ID: 1747302713424",
+      "reason": "s",
+      "timestamp": "2025-05-15T10:22:21.741Z",
+      "actionType": "DELETE_CARD",
+      "user": "FRONT_OFFICE_AGENT"
+    },
+    {
+      "id": "0f41",
+      "action": "Card added for Customer ID: 1747302713424",
+      "timestamp": "2025-05-15T10:22:23.836Z",
+      "actionType": "ADD_CARD",
+      "user": "ADMIN"
+    },
+    {
+      "id": "0a9e",
+      "action": "Card removed from Customer ID: 100",
+      "reason": "s",
+      "timestamp": "2025-05-15T10:22:27.793Z",
+      "actionType": "DELETE_CARD",
+      "user": "FRONT_OFFICE_AGENT"
+    },
+    {
+      "id": "98d4",
+      "action": "Card added for Customer ID: 100",
+      "timestamp": "2025-05-15T10:22:29.370Z",
+      "actionType": "ADD_CARD",
+      "user": "ADMIN"
+    }
+  ]
 }
