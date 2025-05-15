@@ -33,6 +33,7 @@ const Sidebar = () => {
       position='fixed'
       top={0}
       bottom={0}
+      zIndex={9999}
     >
       <Box px={4} pb={4}>
         <Link to='/customers'>

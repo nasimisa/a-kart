@@ -49,10 +49,10 @@ export const AuditLogsList = () => {
       <Spacer />
       <Box mb={4}>
         {isLoading ? (
-          <Skeleton maxW='350px' height='40px' />
+          <Skeleton w='350px' height='40px' />
         ) : (
           <Input
-            maxW='350px'
+            w='350px'
             placeholder='Search by date, action or user who did the action'
             value={search}
             onChange={e => setSearch(e.target.value)}
