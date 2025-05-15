@@ -4,12 +4,13 @@ import { useState } from 'react';
 import { FiCheckCircle, FiCreditCard, FiUserPlus, FiX } from 'react-icons/fi';
 import { ActionType, UserType } from '../api/models';
 import { Empty } from './Empty';
+import { format } from 'date-fns';
 
 export const AuditLogsList = () => {
-  const { data: customers, isLoading } = useGetAuditLogs();
+  const { data: auditLogs, isLoading } = useGetAuditLogs();
   const [search, setSearch] = useState('');
 
-  const filtered = customers?.filter(item => {
+  const filtered = auditLogs?.filter(item => {
     const full = `${item.timestamp} ${item.action} ${item.user}`.toLowerCase();
     return full.includes(search.toLowerCase());
   });
@@ -107,7 +108,7 @@ export const AuditLogsList = () => {
                   css={{ display: 'flex', flexDirection: 'column' }}
                 >
                   <Text fontSize='sm' color='gray.600'>
-                    {new Date(log.timestamp).toLocaleString()}
+                    {log?.timestamp ? format(new Date(log.timestamp), 'd MMMM yyyy, HH:mm') : '-'}
                   </Text>
                   <Text fontWeight='medium'>{log.action}</Text>
                   <Text fontSize='sm' color='gray.500'>

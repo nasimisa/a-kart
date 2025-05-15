@@ -19,6 +19,7 @@ import { ActionType, Customer, UserType } from '../api/models';
 import { useCreateAuditLog, useEditCustomer } from '../api';
 import { toaster } from './Toaster';
 import Copy from './Copy';
+import { formatDate } from '../utilities';
 
 interface CustomerCardProps {
   customer: Customer;
@@ -117,7 +118,7 @@ export const CustomerCard = ({ customer }: CustomerCardProps) => {
         <Text fontWeight='bold'>
           {customer.Name} {customer.Surname}
         </Text>
-        <Text>Birth date: {customer.BirthDate}</Text>
+        <Text>Birth date: {formatDate(customer?.BirthDate)}</Text>
         <Text mb={8}>Mobile number: {customer.GSMNumber}</Text>
 
         {customer.CardNumber ? (

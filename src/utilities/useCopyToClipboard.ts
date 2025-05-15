@@ -6,7 +6,7 @@ export interface UseCopyToClipboardProps {
   onCopiedOut?: () => void;
 }
 
-const useCopyToClipboard = ({ timeout = 600, onCopiedOut }: UseCopyToClipboardProps = {}): [
+export const useCopyToClipboard = ({ timeout = 600, onCopiedOut }: UseCopyToClipboardProps = {}): [
   boolean,
   (data: string) => void
 ] => {
@@ -25,5 +25,3 @@ const useCopyToClipboard = ({ timeout = 600, onCopiedOut }: UseCopyToClipboardPr
 
   return [copied, handleCopy];
 };
-
-export default useCopyToClipboard;

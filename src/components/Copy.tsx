@@ -9,7 +9,7 @@ import {
 } from '@chakra-ui/react';
 import { FiCopy } from 'react-icons/fi';
 import { Tooltip } from './Tooltip';
-import useCopyToClipboard from '../utilities/useCopyToClipboard';
+import { useCopyToClipboard } from '../utilities';
 
 export type IProps = {
   text?: string;

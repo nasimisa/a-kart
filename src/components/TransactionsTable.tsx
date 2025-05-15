@@ -2,6 +2,7 @@ import { Box, Heading, Input, Table, Skeleton } from '@chakra-ui/react';
 import { useGetTransactions } from '../api';
 import { useState } from 'react';
 import { Empty } from './Empty';
+import { formatDate } from '../utilities';
 
 export const TransactionsTable = () => {
   const { data: transactions, isLoading } = useGetTransactions();
@@ -62,7 +63,7 @@ export const TransactionsTable = () => {
                   <Table.Row key={tx.TransactionID}>
                     <Table.Cell>{tx.TransactionID}</Table.Cell>
                     <Table.Cell>{tx.CustomerID}</Table.Cell>
-                    <Table.Cell>{tx.TransactionDate}</Table.Cell>
+                    <Table.Cell>{formatDate(tx?.TransactionDate)}</Table.Cell>
                     <Table.Cell fontVariantNumeric='initial'>
                       ${Number(tx.TransactionAmount).toFixed(2)}
                     </Table.Cell>
