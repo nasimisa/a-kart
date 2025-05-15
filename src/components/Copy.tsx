@@ -11,7 +11,7 @@ import { FiCopy } from 'react-icons/fi';
 import { Tooltip } from './Tooltip';
 import { useCopyToClipboard } from '../utilities';
 
-export type IProps = {
+interface IProps {
   text?: string;
   timeout?: number;
   size?: IconButtonProps['size'];
@@ -21,7 +21,7 @@ export type IProps = {
   buttonProps?: ButtonProps;
   copyOnClick?: boolean;
   onCopiedOut?: () => void;
-};
+}
 
 export const Copy: FC<PropsWithChildren<IProps & StackProps>> = ({
   text,

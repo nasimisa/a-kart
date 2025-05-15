@@ -1,68 +1,27 @@
 import { useState } from 'react';
-import {
-  Box,
-  Text,
-  IconButton,
-  Flex,
-  useDisclosure,
-  Button,
-  Dialog,
-  Portal,
-  CloseButton,
-  Textarea,
-  NativeSelect,
-  Field,
-  HStack,
-} from '@chakra-ui/react';
+import { Box, Text, IconButton, Flex, useDisclosure, Button, HStack } from '@chakra-ui/react';
 import { FiEye, FiEyeOff, FiTrash2, FiPlus } from 'react-icons/fi';
 import { ActionType, Customer, UserType } from '../../api/models';
 import { useCreateAuditLog, useEditCustomer } from '../../api';
 import { Copy, toaster } from '../../components';
 import { formatDate } from '../../utilities';
+import { CardRemovalModal } from './CardRemovalModal';
 
-interface CustomerCardProps {
+interface IProps {
   customer: Customer;
 }
 
-export const CustomerCard = ({ customer }: CustomerCardProps) => {
+export const CustomerCard = ({ customer }: IProps) => {
   const { open, onOpen, onClose } = useDisclosure();
   const [showPan, setShowPan] = useState(false);
-  const [cancelReason, setCancelReason] = useState('');
-  const [deletedBy, setDeletedBy] = useState(UserType.FRONT_OFFICE_AGENT);
-
-  const handleClose = () => {
-    onClose();
-    setCancelReason('');
-    setDeletedBy(UserType.FRONT_OFFICE_AGENT);
-  };
 
   const { mutateAsync, isPending } = useEditCustomer({
-    onSuccess: () => {
-      handleClose();
-    },
     onError: () => {
       toaster.error({ title: 'Something went wrong' });
     },
   });
 
   const { mutateAsync: logAudit } = useCreateAuditLog({});
-
-  const handleRemoveCard = async () => {
-    try {
-      await mutateAsync({ ...customer, CardNumber: undefined });
-      toaster.success({ title: 'Card removed successfully' });
-
-      await logAudit({
-        action: `Card removed from Customer ID: ${customer.CustomerID}`,
-        reason: cancelReason,
-        timestamp: new Date().toISOString(),
-        actionType: ActionType.DELETE_CARD,
-        user: deletedBy,
-      });
-    } catch (error) {
-      console.error('Caught mutation error:', error);
-    }
-  };
 
   const handleAddCard = async () => {
     const newCard = Array.from({ length: 16 }, () => Math.floor(Math.random() * 10)).join('');
@@ -152,76 +111,7 @@ export const CustomerCard = ({ customer }: CustomerCardProps) => {
         )}
       </Box>
 
-      {/* Cancellation Reason Modal */}
-      <Dialog.Root
-        open={open}
-        onOpenChange={handleClose}
-        motionPreset='slide-in-bottom'
-        initialFocusEl={() => null}
-      >
-        <Portal>
-          <Dialog.Backdrop />
-          <Dialog.Positioner>
-            <Dialog.Content>
-              <Dialog.Header>
-                <Dialog.Title>Remove Card</Dialog.Title>
-              </Dialog.Header>
-              <Dialog.Body>
-                <Field.Root>
-                  {/* @ts-ignore */}
-                  <Field.Label fontWeight={500} color='#5e5858'>
-                    Deleted by
-                  </Field.Label>
-                  <NativeSelect.Root>
-                    <NativeSelect.Field
-                      value={deletedBy}
-                      onChange={e => setDeletedBy(e.target.value as UserType)}
-                    >
-                      <option value={UserType.FRONT_OFFICE_AGENT}>Front office Agent</option>
-                      <option value={UserType.CALL_CENTER_AGENT}>Call center Agent</option>
-                      <option value={UserType.ADMIN}>Admin</option>
-                    </NativeSelect.Field>
-                    <NativeSelect.Indicator />
-                  </NativeSelect.Root>
-                </Field.Root>
-
-                <Field.Root css={{ mt: 4 }} required>
-                  {/* @ts-ignore */}
-                  <Field.Label fontWeight={500} color='#5e5858'>
-                    Removal reason
-                  </Field.Label>
-                  <Textarea
-                    placeholder='Enter removal reason'
-                    value={cancelReason}
-                    onChange={e => setCancelReason(e.target.value)}
-                    rows={2}
-                    resize='none'
-                    maxLength={100}
-                  />
-                </Field.Root>
-              </Dialog.Body>
-              <Dialog.Footer>
-                <Dialog.ActionTrigger asChild>
-                  <Button variant='subtle' colorPalette='red'>
-                    Cancel
-                  </Button>
-                </Dialog.ActionTrigger>
-                <Button
-                  colorPalette='green'
-                  onClick={handleRemoveCard}
-                  disabled={!cancelReason?.trim()}
-                  loading={isPending}
-                >
-                  Confirm
-                </Button>
-              </Dialog.Footer>
-              <Dialog.CloseTrigger>
-                <CloseButton size='sm' />
-              </Dialog.CloseTrigger>
-            </Dialog.Content>
-          </Dialog.Positioner>
-        </Portal>
-      </Dialog.Root>
+      <CardRemovalModal open={open} onClose={onClose} customer={customer} />
     </>
   );
 };
