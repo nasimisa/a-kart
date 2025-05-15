@@ -1,4 +1,4 @@
-import { Box, Heading, HStack, Input, List, Spacer, Text } from '@chakra-ui/react';
+import { Box, Heading, HStack, Input, List, Spacer, Text, Skeleton } from '@chakra-ui/react';
 import { useGetAuditLogs } from '../api';
 import { useState } from 'react';
 import { FiCheckCircle, FiCreditCard, FiUserPlus, FiX } from 'react-icons/fi';
@@ -46,61 +46,78 @@ export const AuditLogsList = () => {
       </Heading>
       <Spacer />
       <Box mb={4}>
-        <Input
-          maxW='350px'
-          placeholder='Search by date, action or user who did the action'
-          value={search}
-          onChange={e => setSearch(e.target.value)}
-          mr='4'
-        />
+        {isLoading ? (
+          <Skeleton maxW='350px' height='40px' />
+        ) : (
+          <Input
+            maxW='350px'
+            placeholder='Search by date, action or user who did the action'
+            value={search}
+            onChange={e => setSearch(e.target.value)}
+            mr='4'
+          />
+        )}
       </Box>
 
-      {isLoading ? (
-        <Text>Loading...</Text>
-      ) : (
-        <List.Root
-          gap={3}
-          variant='plain'
-          css={{
-            display: 'grid',
-            gap: '1rem',
-            gridTemplateColumns: 'repeat(1, 1fr)', // base
-            '@media(min-width: 48em)': {
-              // md = 768px = 48em
-              gridTemplateColumns: 'repeat(2, 1fr)',
-            },
-            '@media(min-width: 62em)': {
-              // lg = 992px = 62em
-              gridTemplateColumns: 'repeat(4, 1fr)',
-            },
-          }}
-        >
-          {filtered?.reverse()?.map(log => (
-            <HStack align='flex-start' key={log?.id}>
-              <List.Indicator asChild color='green.500'>
-                {getActionIcon(log.actionType)}
-              </List.Indicator>
-              <List.Item
-                borderBottom='1px solid #eee'
-                pb='2'
-                css={{ display: 'flex', flexDirection: 'column' }}
-              >
-                <Text fontSize='sm' color='gray.600'>
-                  {new Date(log.timestamp).toLocaleString()}
-                </Text>
-                <Text fontWeight='medium'>{log.action}</Text>
-                <Text fontSize='sm' color='gray.500'>
-                  Performed by: {getUserLabel(log?.user)}
-                </Text>
-
-                <Text fontSize='sm' color='gray.500'>
-                  Reason: {log?.reason ?? 'None'}
-                </Text>
-              </List.Item>
-            </HStack>
-          ))}
-        </List.Root>
-      )}
+      <List.Root
+        gap={3}
+        variant='plain'
+        css={{
+          display: 'grid',
+          gap: '1rem',
+          gridTemplateColumns: 'repeat(1, 1fr)', // base
+          '@media(min-width: 48em)': {
+            // md = 768px = 48em
+            gridTemplateColumns: 'repeat(2, 1fr)',
+          },
+          '@media(min-width: 62em)': {
+            // lg = 992px = 62em
+            gridTemplateColumns: 'repeat(4, 1fr)',
+          },
+        }}
+      >
+        {isLoading
+          ? Array.from({ length: 8 }).map((_, index) => (
+              <HStack align='flex-start' key={`skeleton-${index}`}>
+                <Skeleton width='20px' height='20px' borderRadius='sm' />
+                <Box
+                  borderBottom='1px solid #eee'
+                  pb='2'
+                  display='flex'
+                  flexDirection='column'
+                  width='100%'
+                >
+                  <Skeleton height='16px' width='120px' mb='8px' />
+                  <Skeleton height='16px' width='200px' mb='8px' />
+                  <Skeleton height='16px' width='150px' mb='8px' />
+                  <Skeleton height='16px' width='180px' />
+                </Box>
+              </HStack>
+            ))
+          : filtered?.reverse()?.map(log => (
+              <HStack align='flex-start' key={log?.id}>
+                <List.Indicator asChild color='green.500'>
+                  {getActionIcon(log.actionType)}
+                </List.Indicator>
+                <List.Item
+                  borderBottom='1px solid #eee'
+                  pb='2'
+                  css={{ display: 'flex', flexDirection: 'column' }}
+                >
+                  <Text fontSize='sm' color='gray.600'>
+                    {new Date(log.timestamp).toLocaleString()}
+                  </Text>
+                  <Text fontWeight='medium'>{log.action}</Text>
+                  <Text fontSize='sm' color='gray.500'>
+                    Performed by: {getUserLabel(log?.user)}
+                  </Text>
+                  <Text fontSize='sm' color='gray.500'>
+                    Reason: {log?.reason ?? 'None'}
+                  </Text>
+                </List.Item>
+              </HStack>
+            ))}
+      </List.Root>
     </Box>
   );
 };
