@@ -1,6 +1,7 @@
 import { Box, Heading, Input, Table, Skeleton } from '@chakra-ui/react';
 import { useGetTransactions } from '../api';
 import { useState } from 'react';
+import { Empty } from './Empty';
 
 export const TransactionsTable = () => {
   const { data: transactions, isLoading } = useGetTransactions();
@@ -69,6 +70,8 @@ export const TransactionsTable = () => {
                 ))}
           </Table.Body>
         </Table.Root>
+
+        {!isLoading && !filtered?.length && <Empty />}
       </Table.ScrollArea>
     </Box>
   );

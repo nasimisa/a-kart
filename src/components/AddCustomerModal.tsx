@@ -109,7 +109,7 @@ export const AddCustomerModal = ({ open, onClose }: AddCustomerModalProps) => {
 
             <Dialog.Body>
               <VStack gap='4'>
-                <Field.Root invalid={touched.Name && errors.Name} required>
+                <Field.Root invalid={touched.Name && errors.Name}>
                   {/* @ts-ignore */}
                   <Field.Label fontWeight={500} color='#5e5858'>
                     Name
@@ -124,9 +124,9 @@ export const AddCustomerModal = ({ open, onClose }: AddCustomerModalProps) => {
                   {touched.Name && errors.Name && <Field.ErrorText>{errors.Name}</Field.ErrorText>}
                 </Field.Root>
 
-                <Field.Root invalid={touched.Surname && errors.Surname} required>
+                <Field.Root invalid={touched.Surname && errors.Surname}>
                   {/* @ts-ignore */}
-                  <Field.Label fontWeight={500} color='#5e5858' asChild>
+                  <Field.Label fontWeight={500} color='#5e5858'>
                     Surname
                   </Field.Label>
                   <Input
@@ -141,7 +141,7 @@ export const AddCustomerModal = ({ open, onClose }: AddCustomerModalProps) => {
                   )}
                 </Field.Root>
 
-                <Field.Root invalid={touched.BirthDate && errors.BirthDate} required>
+                <Field.Root invalid={touched.BirthDate && errors.BirthDate}>
                   {/* @ts-ignore */}
                   <Field.Label fontWeight={500} color='#5e5858'>
                     Birth date
@@ -159,7 +159,7 @@ export const AddCustomerModal = ({ open, onClose }: AddCustomerModalProps) => {
                   )}
                 </Field.Root>
 
-                <Field.Root invalid={touched.GSMNumber && errors.GSMNumber} required>
+                <Field.Root invalid={touched.GSMNumber && errors.GSMNumber}>
                   {/* @ts-ignore */}
                   <Field.Label fontWeight={500} color='#5e5858'>
                     Mobile number

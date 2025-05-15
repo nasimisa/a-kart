@@ -3,6 +3,7 @@ import { useGetAuditLogs } from '../api';
 import { useState } from 'react';
 import { FiCheckCircle, FiCreditCard, FiUserPlus, FiX } from 'react-icons/fi';
 import { ActionType, UserType } from '../api/models';
+import { Empty } from './Empty';
 
 export const AuditLogsList = () => {
   const { data: customers, isLoading } = useGetAuditLogs();
@@ -58,6 +59,7 @@ export const AuditLogsList = () => {
           />
         )}
       </Box>
+      {!isLoading && !filtered?.length && <Empty />}
 
       <List.Root
         gap={3}

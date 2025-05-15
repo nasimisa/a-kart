@@ -6,3 +6,4 @@ export * from './Toaster';
 export * from './TransactionsTable';
 export * from './AuditLogsList';
 export * from './Tooltip';
+export * from './Empty';

@@ -12,7 +12,7 @@ import {
   Stack,
 } from '@chakra-ui/react';
 import { useGetCustomers } from '../api';
-import { CustomerCard } from '../components';
+import { CustomerCard, Empty } from '../components';
 import { FiPlus } from 'react-icons/fi';
 import { useState } from 'react';
 
@@ -53,6 +53,8 @@ export const CustomersList = ({ onOpen }: { onOpen: () => void }) => {
           Add Customer
         </Button>
       </Stack>
+
+      {!isLoading && !filtered?.length && <Empty />}
 
       <SimpleGrid columns={{ base: 1, md: 2, lg: 4 }} gap={4}>
         {isLoading
