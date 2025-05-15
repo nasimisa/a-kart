@@ -79,6 +79,12 @@ export const CustomerCard = ({ customer }: CustomerCardProps) => {
     ? `${customer.CardNumber.slice(0, 4)} **** **** ${customer.CardNumber.slice(-4)}`
     : '';
 
+  const handleClose = () => {
+    onClose();
+    setCancelReason('');
+    setDeletedBy(UserType.FRONT_OFFICE_AGENT);
+  };
+
   return (
     <Box
       position='relative'
@@ -141,7 +147,7 @@ export const CustomerCard = ({ customer }: CustomerCardProps) => {
       {/* Cancellation Reason Modal */}
       <Dialog.Root
         open={open}
-        onOpenChange={onClose}
+        onOpenChange={handleClose}
         motionPreset='slide-in-bottom'
         initialFocusEl={() => null}
       >
@@ -154,7 +160,10 @@ export const CustomerCard = ({ customer }: CustomerCardProps) => {
               </Dialog.Header>
               <Dialog.Body>
                 <Field.Root>
-                  <Field.Label>Deleted by</Field.Label>
+                  {/* @ts-ignore */}
+                  <Field.Label fontWeight={500} color='#5e5858'>
+                    Deleted by
+                  </Field.Label>
                   <NativeSelect.Root>
                     <NativeSelect.Field
                       value={deletedBy}
@@ -169,13 +178,17 @@ export const CustomerCard = ({ customer }: CustomerCardProps) => {
                 </Field.Root>
 
                 <Field.Root css={{ mt: 4 }} required>
-                  <Field.Label>Removal reason</Field.Label>
+                  {/* @ts-ignore */}
+                  <Field.Label fontWeight={500} color='#5e5858'>
+                    Removal reason
+                  </Field.Label>
                   <Textarea
                     placeholder='Enter removal reason'
                     value={cancelReason}
                     onChange={e => setCancelReason(e.target.value)}
-                    rows={4}
+                    rows={2}
                     resize='none'
+                    maxLength={100}
                   />
                 </Field.Root>
               </Dialog.Body>

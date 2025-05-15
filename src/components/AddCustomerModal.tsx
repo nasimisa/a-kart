@@ -1,9 +1,26 @@
 import { Button, Input, VStack, Dialog, CloseButton, Field, NativeSelect } from '@chakra-ui/react';
-import { Formik, Form } from 'formik';
+import { useFormik } from 'formik';
 import { useCreateAuditLog, useCreateCustomer } from '../api';
 import { ActionType, Customer, UserType } from '../api/models';
 import { toaster } from './Toaster';
 import { useState } from 'react';
+import { object, string } from 'yup';
+import { parse, isValid, format } from 'date-fns';
+
+const validationSchema = object({
+  Name: string().required('Name is required').max(10, 'Name cannot exceed 10 characters'),
+  Surname: string().required('Surname is required').max(10, 'Surname cannot exceed 10 characters'),
+  BirthDate: string()
+    .required('Birth date is required')
+    .test('is-valid-date', 'Invalid date format', value => {
+      if (!value) return false;
+      const parsed = parse(value, 'yyyy-MM-dd', new Date());
+      return isValid(parsed) && format(parsed, 'yyyy-MM-dd') === value;
+    }),
+  GSMNumber: string()
+    .matches(/^\+994\d{9}$/, 'Must be a valid Azerbaijani number')
+    .required('Mobile number is required'),
+});
 
 interface AddCustomerModalProps {
   open: boolean;
@@ -12,17 +29,6 @@ interface AddCustomerModalProps {
 
 export const AddCustomerModal = ({ open, onClose }: AddCustomerModalProps) => {
   const [addedBy, setAddedBy] = useState(UserType.FRONT_OFFICE_AGENT);
-
-  const { mutateAsync, isPending } = useCreateCustomer({
-    onSuccess: () => {
-      toaster.success({ title: 'Customer added' });
-
-      onClose();
-    },
-    onError: () => {
-      toaster.error({ title: 'Something went wrong' });
-    },
-  });
 
   const { mutateAsync: logAudit } = useCreateAuditLog({});
 
@@ -41,112 +47,178 @@ export const AddCustomerModal = ({ open, onClose }: AddCustomerModalProps) => {
     }
   };
 
+  const {
+    values,
+    handleSubmit,
+    handleChange,
+    handleBlur,
+    errors,
+    touched,
+    isValid,
+    resetForm,
+    dirty,
+  } = useFormik({
+    initialValues: {
+      Name: '',
+      Surname: '',
+      BirthDate: '',
+      GSMNumber: '',
+    },
+    validationSchema,
+    onSubmit: values => {
+      const newCustomer: Customer = {
+        ...values,
+        CustomerID: String(Date.now()),
+        CardNumber: undefined,
+      };
+      handleAddCustomer(newCustomer);
+    },
+  });
+
+  const handleClose = () => {
+    onClose();
+    resetForm();
+  };
+
+  const { mutateAsync, isPending } = useCreateCustomer({
+    onSuccess: () => {
+      toaster.success({ title: 'Customer added' });
+      handleClose();
+    },
+    onError: () => {
+      toaster.error({ title: 'Something went wrong' });
+    },
+  });
+
   return (
-    <Dialog.Root
-      open={open}
-      onOpenChange={onClose}
-      motionPreset='slide-in-bottom'
-      initialFocusEl={() => null}
-    >
-      <Dialog.Backdrop />
+    <form onSubmit={handleSubmit}>
+      <Dialog.Root
+        open={open}
+        onOpenChange={handleClose}
+        motionPreset='slide-in-bottom'
+        initialFocusEl={() => null}
+        scrollBehavior='inside'
+      >
+        <Dialog.Backdrop />
 
-      <Dialog.Positioner>
-        <Dialog.Content>
-          <Dialog.Header>
-            <Dialog.Title>Add New Customer</Dialog.Title>
-          </Dialog.Header>
+        <Dialog.Positioner>
+          <Dialog.Content>
+            <Dialog.Header>
+              <Dialog.Title>Add New Customer</Dialog.Title>
+            </Dialog.Header>
 
-          <Formik
-            initialValues={{
-              Name: '',
-              Surname: '',
-              BirthDate: '',
-              GSMNumber: '',
-            }}
-            onSubmit={values => {
-              const newCustomer = {
-                ...values,
-                CustomerID: String(Date.now()),
-                CardNumber: undefined,
-              };
-              handleAddCustomer(newCustomer);
-            }}
-          >
-            {({ handleChange }) => (
-              <Form>
-                <Dialog.Body>
-                  <VStack gap='4'>
-                    <Field.Root>
-                      <Field.Label>Name</Field.Label>
-                      <Input
-                        name='Name'
-                        placeholder='Enter name'
-                        onChange={handleChange}
-                        required
-                      />
-                    </Field.Root>
+            <Dialog.Body>
+              <VStack gap='4'>
+                <Field.Root invalid={touched.Name && errors.Name} required>
+                  {/* @ts-ignore */}
+                  <Field.Label fontWeight={500} color='#5e5858'>
+                    Name
+                  </Field.Label>
+                  <Input
+                    name='Name'
+                    placeholder='Enter name'
+                    value={values.Name}
+                    onChange={handleChange}
+                    onBlur={handleBlur}
+                  />
+                  {touched.Name && errors.Name && <Field.ErrorText>{errors.Name}</Field.ErrorText>}
+                </Field.Root>
 
-                    <Field.Root>
-                      <Field.Label>Name</Field.Label>
-                      <Input
-                        name='Surname'
-                        placeholder='Enter surname'
-                        onChange={handleChange}
-                        required
-                      />
-                    </Field.Root>
+                <Field.Root invalid={touched.Surname && errors.Surname} required>
+                  {/* @ts-ignore */}
+                  <Field.Label fontWeight={500} color='#5e5858' asChild>
+                    Surname
+                  </Field.Label>
+                  <Input
+                    name='Surname'
+                    placeholder='Enter surname'
+                    value={values.Surname}
+                    onChange={handleChange}
+                    onBlur={handleBlur}
+                  />
+                  {touched.Surname && errors.Surname && (
+                    <Field.ErrorText>{errors.Surname}</Field.ErrorText>
+                  )}
+                </Field.Root>
 
-                    <Field.Root>
-                      <Field.Label>Birth date</Field.Label>
-                      <Input name='BirthDate' type='date' onChange={handleChange} required />
-                    </Field.Root>
+                <Field.Root invalid={touched.BirthDate && errors.BirthDate} required>
+                  {/* @ts-ignore */}
+                  <Field.Label fontWeight={500} color='#5e5858'>
+                    Birth date
+                  </Field.Label>
+                  <Input
+                    name='BirthDate'
+                    type='date'
+                    value={values.BirthDate}
+                    onChange={handleChange}
+                    onBlur={handleBlur}
+                    mask='99/99/9999'
+                  />
+                  {touched.BirthDate && errors.BirthDate && (
+                    <Field.ErrorText>{errors.BirthDate}</Field.ErrorText>
+                  )}
+                </Field.Root>
 
-                    <Field.Root>
-                      <Field.Label>Mobile number</Field.Label>
-                      <Input
-                        name='GSMNumber'
-                        placeholder='+994XXXXXXXXX'
-                        onChange={handleChange}
-                        required
-                      />
-                    </Field.Root>
+                <Field.Root invalid={touched.GSMNumber && errors.GSMNumber} required>
+                  {/* @ts-ignore */}
+                  <Field.Label fontWeight={500} color='#5e5858'>
+                    Mobile number
+                  </Field.Label>
+                  <Input
+                    name='GSMNumber'
+                    placeholder='+994XXXXXXXXX'
+                    value={values.GSMNumber}
+                    onChange={handleChange}
+                    onBlur={handleBlur}
+                  />
+                  {touched.GSMNumber && errors.GSMNumber && (
+                    <Field.ErrorText>{errors.GSMNumber}</Field.ErrorText>
+                  )}
+                </Field.Root>
 
-                    <Field.Root>
-                      <Field.Label>Added by</Field.Label>
-                      <NativeSelect.Root>
-                        <NativeSelect.Field
-                          value={addedBy}
-                          onChange={e => setAddedBy(e.target.value as UserType)}
-                        >
-                          <option value={UserType.FRONT_OFFICE_AGENT}>Front office Agent</option>
-                          <option value={UserType.CALL_CENTER_AGENT}>Call center Agent</option>
-                          <option value={UserType.ADMIN}>Admin</option>
-                        </NativeSelect.Field>
-                        <NativeSelect.Indicator />
-                      </NativeSelect.Root>
-                    </Field.Root>
-                  </VStack>
-                </Dialog.Body>
-                <Dialog.Footer>
-                  <Dialog.ActionTrigger asChild>
-                    <Button variant='subtle' colorPalette='red'>
-                      Cancel
-                    </Button>
-                  </Dialog.ActionTrigger>
+                <Field.Root required>
+                  {/* @ts-ignore */}
+                  <Field.Label fontWeight={500} color='#5e5858'>
+                    Added by
+                  </Field.Label>
+                  <NativeSelect.Root>
+                    <NativeSelect.Field
+                      value={addedBy}
+                      onChange={e => setAddedBy(e.target.value as UserType)}
+                    >
+                      <option value={UserType.FRONT_OFFICE_AGENT}>Front office Agent</option>
+                      <option value={UserType.CALL_CENTER_AGENT}>Call center Agent</option>
+                      <option value={UserType.ADMIN}>Admin</option>
+                    </NativeSelect.Field>
+                    <NativeSelect.Indicator />
+                  </NativeSelect.Root>
+                </Field.Root>
+              </VStack>
+            </Dialog.Body>
 
-                  <Button type='submit' colorPalette='green' loading={isPending}>
-                    Save
-                  </Button>
-                </Dialog.Footer>
-              </Form>
-            )}
-          </Formik>
+            <Dialog.Footer>
+              <Dialog.ActionTrigger asChild>
+                <Button variant='subtle' colorPalette='red'>
+                  Cancel
+                </Button>
+              </Dialog.ActionTrigger>
 
-          <Dialog.CloseTrigger>
-            <CloseButton size='sm' />
-          </Dialog.CloseTrigger>
-        </Dialog.Content>
-      </Dialog.Positioner>
-    </Dialog.Root>
+              <Button
+                type='submit'
+                colorPalette='green'
+                loading={isPending}
+                disabled={!dirty || !isValid}
+              >
+                Save
+              </Button>
+            </Dialog.Footer>
+
+            <Dialog.CloseTrigger>
+              <CloseButton size='sm' />
+            </Dialog.CloseTrigger>
+          </Dialog.Content>
+        </Dialog.Positioner>
+      </Dialog.Root>
+    </form>
   );
 };
