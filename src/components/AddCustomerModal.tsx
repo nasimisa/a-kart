@@ -68,7 +68,7 @@ export const AddCustomerModal = ({ open, onClose }: AddCustomerModalProps) => {
     onSubmit: values => {
       const newCustomer: Customer = {
         ...values,
-        CustomerID: String(Date.now()),
+        CustomerID: String(Date.now())?.slice(-7),
         CardNumber: undefined,
       };
       handleAddCustomer(newCustomer);

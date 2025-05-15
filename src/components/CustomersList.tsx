@@ -56,7 +56,7 @@ export const CustomersList = ({ onOpen }: { onOpen: () => void }) => {
 
       {!isLoading && !filtered?.length && <Empty />}
 
-      <SimpleGrid columns={{ base: 1, md: 2, lg: 4 }} gap={4}>
+      <SimpleGrid columns={{ base: 1, md: 2, lg: 3, xl: 4 }} gap={4}>
         {isLoading
           ? Array.from({ length: 12 }).map((_, index) => (
               <Box
@@ -88,7 +88,7 @@ export const CustomersList = ({ onOpen }: { onOpen: () => void }) => {
                 <SkeletonText maxW={120} mb={1} />
 
                 <Flex align='center' mt={8}>
-                  <Skeleton w={167.14} h='24px' />
+                  <Skeleton w={{ base: '20vw', lg: '10vw' }} h='24px' />
 
                   <IconButton
                     ml='2'

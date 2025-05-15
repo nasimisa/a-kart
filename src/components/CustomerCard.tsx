@@ -89,35 +89,28 @@ export const CustomerCard = ({ customer }: CustomerCardProps) => {
 
   return (
     <>
-      <Box
-        position='relative'
-        borderWidth='1px'
-        p='4'
-        borderRadius='lg'
-        boxShadow='md'
-        bg='white'
-        maxW={400}
-      >
-        <HStack
-          position='absolute'
-          top='2'
-          right='2'
-          bg='purple.100'
-          color='purple.800'
-          fontSize='xs'
-          fontWeight='bold'
-          px='2'
-          py='1'
-          borderRadius='md'
-          boxShadow='sm'
-        >
-          ID: {customer.CustomerID}
-          <Copy ml={2} text={customer.CustomerID} />
+      <Box borderWidth='1px' p='4' borderRadius='lg' boxShadow='md' bg='white' maxW={400}>
+        <HStack justifyContent='space-between'>
+          <Text fontWeight='bold'>
+            {customer.Name} {customer.Surname}
+          </Text>
+
+          <HStack
+            bg='purple.100'
+            color='purple.800'
+            fontSize='2xs'
+            fontWeight='bold'
+            px='2'
+            py='1'
+            borderRadius='md'
+            boxShadow='sm'
+            w='fit-content'
+          >
+            ID: {customer.CustomerID}
+            <Copy ml={2} text={customer.CustomerID} />
+          </HStack>
         </HStack>
 
-        <Text fontWeight='bold'>
-          {customer.Name} {customer.Surname}
-        </Text>
         <Text>Birth date: {formatDate(customer?.BirthDate)}</Text>
         <Text mb={8}>Mobile number: {customer.GSMNumber}</Text>
 
