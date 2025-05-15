@@ -30,6 +30,7 @@ export const TransactionsTable = () => {
         maxW={{ base: '500px', md: 1200 }}
         maxH={{ base: '50vh', xl: '79vh' }}
         rounded='lg'
+        mt={4}
       >
         <Table.Root showColumnBorder stickyHeader interactive maxWidth={1200}>
           <Table.Header>
