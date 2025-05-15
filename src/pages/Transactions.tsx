@@ -1,4 +1,4 @@
-import { TransactionsTable } from '../components';
+import { TransactionsTable } from '../modules';
 
 const Transactions = () => {
   return <TransactionsTable />;

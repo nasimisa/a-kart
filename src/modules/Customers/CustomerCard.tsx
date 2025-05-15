@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import {
   Box,
   Text,
@@ -14,12 +15,10 @@ import {
   HStack,
 } from '@chakra-ui/react';
 import { FiEye, FiEyeOff, FiTrash2, FiPlus } from 'react-icons/fi';
-import { useState } from 'react';
-import { ActionType, Customer, UserType } from '../api/models';
-import { useCreateAuditLog, useEditCustomer } from '../api';
-import { toaster } from './Toaster';
-import Copy from './Copy';
-import { formatDate } from '../utilities';
+import { ActionType, Customer, UserType } from '../../api/models';
+import { useCreateAuditLog, useEditCustomer } from '../../api';
+import { Copy, toaster } from '../../components';
+import { formatDate } from '../../utilities';
 
 interface CustomerCardProps {
   customer: Customer;

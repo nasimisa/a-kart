@@ -1,10 +1,10 @@
-import { Box, Heading, HStack, Input, List, Spacer, Text, Skeleton } from '@chakra-ui/react';
-import { useGetAuditLogs } from '../api';
 import { useState } from 'react';
-import { FiCheckCircle, FiCreditCard, FiUserPlus, FiX } from 'react-icons/fi';
-import { ActionType, UserType } from '../api/models';
-import { Empty } from './Empty';
 import { format } from 'date-fns';
+import { Box, Heading, HStack, Input, List, Spacer, Text, Skeleton } from '@chakra-ui/react';
+import { FiCheckCircle, FiCreditCard, FiUserPlus, FiX } from 'react-icons/fi';
+import { useGetAuditLogs } from '../../api';
+import { ActionType, UserType } from '../../api/models';
+import { Empty } from '../../components';
 
 export const AuditLogsList = () => {
   const { data: auditLogs, isLoading } = useGetAuditLogs();

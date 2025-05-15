@@ -23,7 +23,7 @@ export type IProps = {
   onCopiedOut?: () => void;
 };
 
-const Copy: FC<PropsWithChildren<IProps & StackProps>> = ({
+export const Copy: FC<PropsWithChildren<IProps & StackProps>> = ({
   text,
   children,
   timeout = 600,
@@ -73,5 +73,3 @@ const Copy: FC<PropsWithChildren<IProps & StackProps>> = ({
     </HStack>
   );
 };
-
-export default Copy;

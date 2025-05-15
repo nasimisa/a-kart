@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import {
   Box,
   Button,
@@ -11,10 +12,10 @@ import {
   SkeletonText,
   Stack,
 } from '@chakra-ui/react';
-import { useGetCustomers } from '../api';
-import { CustomerCard, Empty } from '../components';
 import { FiPlus } from 'react-icons/fi';
-import { useState } from 'react';
+import { useGetCustomers } from '../../api';
+import { Empty } from '../../components';
+import { CustomerCard } from './CustomerCard';
 
 export const CustomersList = ({ onOpen }: { onOpen: () => void }) => {
   const { data: customers, isLoading } = useGetCustomers();

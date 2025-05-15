@@ -1,8 +1,8 @@
-import { Box, Heading, Input, Table, Skeleton } from '@chakra-ui/react';
-import { useGetTransactions } from '../api';
 import { useState } from 'react';
-import { Empty } from './Empty';
-import { formatDate } from '../utilities';
+import { Box, Heading, Input, Table, Skeleton } from '@chakra-ui/react';
+import { useGetTransactions } from '../../api';
+import { formatDate } from '../../utilities';
+import { Empty } from '../../components';
 
 export const TransactionsTable = () => {
   const { data: transactions, isLoading } = useGetTransactions();

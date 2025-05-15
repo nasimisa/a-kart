@@ -1,5 +1,5 @@
 import { Box, useDisclosure } from '@chakra-ui/react';
-import { AddCustomerModal, CustomersList } from '../components';
+import { AddCustomerModal, CustomersList } from '../modules';
 
 const Customers = () => {
   const { open, onOpen, onClose } = useDisclosure();

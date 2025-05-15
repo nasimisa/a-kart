@@ -1,4 +1,4 @@
-import { AuditLogsList } from '../components';
+import { AuditLogsList } from '../modules';
 
 const AuditLogs = () => {
   return <AuditLogsList />;

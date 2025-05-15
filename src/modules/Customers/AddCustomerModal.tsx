@@ -1,11 +1,11 @@
-import { Button, Input, VStack, Dialog, CloseButton, Field, NativeSelect } from '@chakra-ui/react';
-import { useFormik } from 'formik';
-import { useCreateAuditLog, useCreateCustomer } from '../api';
-import { ActionType, Customer, UserType } from '../api/models';
-import { toaster } from './Toaster';
 import { useState } from 'react';
 import { object, string } from 'yup';
 import { parse, isValid, format } from 'date-fns';
+import { Button, Input, VStack, Dialog, CloseButton, Field, NativeSelect } from '@chakra-ui/react';
+import { useFormik } from 'formik';
+import { useCreateAuditLog, useCreateCustomer } from '../../api';
+import { ActionType, Customer, UserType } from '../../api/models';
+import { toaster } from '../../components';
 
 const validationSchema = object({
   Name: string().required('Name is required').max(10, 'Name cannot exceed 10 characters'),
