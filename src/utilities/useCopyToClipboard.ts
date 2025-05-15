@@ -1,12 +1,12 @@
 import { useCallbackRef } from '@chakra-ui/react';
 import { useState } from 'react';
 
-export interface UseCopyToClipboardProps {
+interface IProps {
   timeout?: number;
   onCopiedOut?: () => void;
 }
 
-export const useCopyToClipboard = ({ timeout = 600, onCopiedOut }: UseCopyToClipboardProps = {}): [
+export const useCopyToClipboard = ({ timeout = 600, onCopiedOut }: IProps = {}): [
   boolean,
   (data: string) => void
 ] => {

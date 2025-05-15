@@ -1,37 +1,29 @@
-import { useState } from 'react';
-import { Box, Heading, Input, Table, Skeleton } from '@chakra-ui/react';
+import { Box, Heading, Table, Skeleton } from '@chakra-ui/react';
 import { useGetTransactions } from '../../api';
-import { formatDate } from '../../utilities';
-import { Empty } from '../../components';
+import { formatDate, useSearchAndFilter } from '../../utilities';
+import { Empty, Search } from '../../components';
+import { Transaction } from '../../api/models';
 
 export const TransactionsTable = () => {
   const { data: transactions, isLoading } = useGetTransactions();
-  const [search, setSearch] = useState('');
 
-  const filtered = transactions?.filter(item => {
-    const full = `${item.CustomerID} ${item.TransactionID}`.toLowerCase();
-
-    return full.includes(search.toLowerCase());
-  });
+  const { search, setSearch, filteredData } = useSearchAndFilter<Transaction>(transactions, [
+    'TransactionID',
+    'CustomerID',
+  ]);
 
   return (
     <Box p='6'>
       <Heading size='3xl' mb={4}>
         Transactions
       </Heading>
-      <Box mb={4}>
-        {isLoading ? (
-          <Skeleton w='300px' height='40px' />
-        ) : (
-          <Input
-            w='300px'
-            placeholder='Search by customer ID or transaction ID'
-            value={search}
-            onChange={e => setSearch(e.target.value)}
-            mr='4'
-          />
-        )}
-      </Box>
+
+      <Search
+        search={search}
+        setSearch={setSearch}
+        isLoading={isLoading}
+        placeholder='Search by customer ID or transaction ID'
+      />
 
       <Table.ScrollArea
         borderWidth='1px'
@@ -59,7 +51,7 @@ export const TransactionsTable = () => {
                     ))}
                   </Table.Row>
                 ))
-              : filtered?.map(tx => (
+              : filteredData?.map(tx => (
                   <Table.Row key={tx.TransactionID}>
                     <Table.Cell>{tx.TransactionID}</Table.Cell>
                     <Table.Cell>{tx.CustomerID}</Table.Cell>
@@ -72,7 +64,7 @@ export const TransactionsTable = () => {
           </Table.Body>
         </Table.Root>
 
-        {!isLoading && !filtered?.length && <Empty />}
+        {!isLoading && !filteredData?.length && <Empty />}
       </Table.ScrollArea>
     </Box>
   );

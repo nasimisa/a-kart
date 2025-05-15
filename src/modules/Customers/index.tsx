@@ -1,4 +1,3 @@
-import { useState } from 'react';
 import {
   Box,
   Button,
@@ -6,7 +5,6 @@ import {
   Heading,
   HStack,
   IconButton,
-  Input,
   SimpleGrid,
   Skeleton,
   SkeletonText,
@@ -14,18 +12,21 @@ import {
 } from '@chakra-ui/react';
 import { FiPlus } from 'react-icons/fi';
 import { useGetCustomers } from '../../api';
-import { Empty } from '../../components';
+import { Empty, Search } from '../../components';
 import { CustomerCard } from './CustomerCard';
+import { useSearchAndFilter } from '../../utilities';
+import { Customer } from '../../api/models';
 
 export const CustomersList = ({ onOpen }: { onOpen: () => void }) => {
   const { data: customers, isLoading } = useGetCustomers();
-  const [search, setSearch] = useState('');
 
-  const filtered = customers?.filter(item => {
-    const full =
-      `${item.Name} ${item.Surname} ${item.GSMNumber} ${item.CardNumber} ${item.CustomerID}`.toLowerCase();
-    return full.includes(search.toLowerCase());
-  });
+  const { search, setSearch, filteredData } = useSearchAndFilter<Customer>(customers, [
+    'Name',
+    'Surname',
+    'GSMNumber',
+    'CardNumber',
+    'CustomerID',
+  ]);
 
   return (
     <>
@@ -38,24 +39,20 @@ export const CustomersList = ({ onOpen }: { onOpen: () => void }) => {
         mb={4}
         justifyContent='space-between'
       >
-        {isLoading ? (
-          <Skeleton w='300px' height='40px' />
-        ) : (
-          <Input
-            w='300px'
-            placeholder='Search by name, mobile or card number'
-            value={search}
-            onChange={e => setSearch(e.target.value)}
-            mr='4'
-          />
-        )}
+        <Search
+          search={search}
+          setSearch={setSearch}
+          isLoading={isLoading}
+          placeholder='Search by name, mobile or card number'
+        />
+
         <Button color='#fff' bg='#F57430' onClick={onOpen} w={200} loading={isLoading}>
           <FiPlus />
           Add Customer
         </Button>
       </Stack>
 
-      {!isLoading && !filtered?.length && <Empty />}
+      {!isLoading && !filteredData?.length && <Empty />}
 
       <SimpleGrid columns={{ base: 1, md: 2, lg: 3, xl: 4 }} gap={4}>
         {isLoading
@@ -110,7 +107,7 @@ export const CustomersList = ({ onOpen }: { onOpen: () => void }) => {
                 </Flex>
               </Box>
             ))
-          : filtered
+          : filteredData
               ?.reverse()
               ?.map(customer => <CustomerCard key={customer.CustomerID} customer={customer} />)}
       </SimpleGrid>

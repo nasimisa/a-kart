@@ -1,19 +1,19 @@
-import { useState } from 'react';
 import { format } from 'date-fns';
-import { Box, Heading, HStack, Input, List, Spacer, Text, Skeleton } from '@chakra-ui/react';
+import { Box, Heading, HStack, List, Text, Skeleton } from '@chakra-ui/react';
 import { FiCheckCircle, FiCreditCard, FiUserPlus, FiX } from 'react-icons/fi';
 import { useGetAuditLogs } from '../../api';
-import { ActionType, UserType } from '../../api/models';
-import { Empty } from '../../components';
+import { ActionType, AuditLog, UserType } from '../../api/models';
+import { Empty, Search } from '../../components';
+import { useSearchAndFilter } from '../../utilities';
 
 export const AuditLogsList = () => {
   const { data: auditLogs, isLoading } = useGetAuditLogs();
-  const [search, setSearch] = useState('');
 
-  const filtered = auditLogs?.filter(item => {
-    const full = `${item.timestamp} ${item.action} ${item.user}`.toLowerCase();
-    return full.includes(search.toLowerCase());
-  });
+  const { search, setSearch, filteredData } = useSearchAndFilter<AuditLog>(auditLogs, [
+    'timestamp',
+    'action',
+    'user',
+  ]);
 
   const getActionIcon = (action: ActionType) => {
     switch (action) {
@@ -46,21 +46,16 @@ export const AuditLogsList = () => {
       <Heading size='3xl' mb={4}>
         Audit logs
       </Heading>
-      <Spacer />
-      <Box mb={4}>
-        {isLoading ? (
-          <Skeleton w='350px' height='40px' />
-        ) : (
-          <Input
-            w='350px'
-            placeholder='Search by date, action or user who did the action'
-            value={search}
-            onChange={e => setSearch(e.target.value)}
-            mr='4'
-          />
-        )}
-      </Box>
-      {!isLoading && !filtered?.length && <Empty />}
+
+      <Search
+        search={search}
+        setSearch={setSearch}
+        isLoading={isLoading}
+        placeholder='Search by date, action or user who did the action'
+        width='350px'
+      />
+
+      {!isLoading && !filteredData?.length && <Empty />}
 
       <List.Root
         gap={3}
@@ -68,6 +63,7 @@ export const AuditLogsList = () => {
         css={{
           display: 'grid',
           gap: '1rem',
+          mt: 4,
           gridTemplateColumns: 'repeat(1, 1fr)', // base
           '@media(min-width: 48em)': {
             // md = 768px = 48em
@@ -97,7 +93,7 @@ export const AuditLogsList = () => {
                 </Box>
               </HStack>
             ))
-          : filtered?.reverse()?.map(log => (
+          : filteredData?.reverse()?.map(log => (
               <HStack align='flex-start' key={log?.id}>
                 <List.Indicator asChild color='green.500'>
                   {getActionIcon(log.actionType)}

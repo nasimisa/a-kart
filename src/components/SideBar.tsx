@@ -49,7 +49,7 @@ const Sidebar = () => {
             onError={handleImageError}
           />
         </Link>
-        {!imageLoaded && <Skeleton height='60px' width='100%' />}
+        {!imageLoaded && <Skeleton height='60px' w='full' />}
       </Box>
 
       {navItems.map(({ label, to }) => {
