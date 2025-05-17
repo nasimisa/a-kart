@@ -7,9 +7,8 @@ A React + TypeScript application for managing A-Kart digital card customers, car
 - React + TypeScript
 - Chakra UI
 - React Router
-- Formik
+- Formik + Yup
 - TanStack Query
-- Redux Toolkit
 - JSON Server
 
 ## 🚀 Features
