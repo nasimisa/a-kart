@@ -49,6 +49,7 @@ npm start
     components/                 # Reusable UI components
     modules/                    # Reusable domain-based components
     pages/                      # Pages by route + 404 page
+    router/                     # React router set up
     utils/                      # Helpers (format date etc.)
     App.tsx
     index.tsx
