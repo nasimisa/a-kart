@@ -15,10 +15,11 @@ A React + TypeScript application for managing A-Kart digital card customers, car
 ## 🚀 Features
 
 - Add, view, and manage customers and their debit cards
-- Generate new 16-digit card numbers
-- Delete cards with cancellation reason
-- View transactions per customer
-- Searchable audit logs of all key actions
+- Generate new 16-digit card numbers (masked cards)
+- Delete cards with removal reason
+- View and search transactions
+- Add, View and search audit logs of all key actions (Create customer, Add/Remove card for customer)
+- Responsiveness of app for all devices + Empty states and Loaders for pages
 - Fully mocked backend using `json-server`
 
 ## 📦 Setup
